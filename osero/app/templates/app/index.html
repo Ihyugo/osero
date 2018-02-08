@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load static %}
+{% load staticfiles %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script type="text/javascript" src="{{STTAIC_ULR}}app/js/jquery.min.js"></script>
+<title> My Osero</title>
+</head>
+<body>
+
+<form id="choice" action="" method="post">{% csrf_token %}
+<table style="margin: auto; background: black;">
+{% for package in packages %}
+<tr>
+{% for item in package.items %}
+<td><button  type="submit" style="background: black;" id="choice_panel" value="{{ item.item.1 }},{{ item.item.2 }}"><img src="{{ item.item.0.url }}" alt="{{ item.item.0.name }}" height ="90" width="90" /></button></td>
+{% endfor %}
+</tr>
+{% endfor %}
+</table>
+</form>
+
+</body>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#choice').submit(function(){
+			$.ajax({
+				'url':'',
+				'type':'POST',
+				'data':{
+					'place':$('#choice_panel').val(),
+					'csrfmidlwaretoken':$('input[name=csrfmidlwaretoken]').val(),
+				},
+				'succexx':function(response){
+					alert('check!');
+				},
+			});
+			return false;
+		});
+	});
+</script>
+</html>
+
