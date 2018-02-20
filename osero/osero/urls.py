@@ -21,8 +21,8 @@ from django.views.static import  serve
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^osero/', include('app.urls')),
-    url(r'^osero/(?P<papth>.*)$', serve, {'media_root': settings.MEDIA_ROOT}),
+    url(r'^osero/', include('app.urls', namespace='app', app_name='app')),
+    url(r'^osero/osero/(?P<papth>.*)$', serve, {'media_root': settings.MEDIA_ROOT}),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

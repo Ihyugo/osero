@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% load static %}
+{% load staticfiles %}
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script type="text/javascript" src="{% static 'app/js/jquery.min.js' %}"></script>
+<title> My Osero</title>
+</head>
+<body style="text-align:center;">
+<h1>Osero Start</h1>
+<form  action="/osero/start/" method="post">{% csrf_token %}
+    <input type="submit" name="start" value="start" >
+{{ players }}
+    </form>
+
+</body>
+</html>
+

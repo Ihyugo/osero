@@ -1,46 +1,56 @@
 <!DOCTYPE html>
 {% load static %}
 {% load staticfiles %}
-<html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<script type="text/javascript" src="{{STTAIC_ULR}}app/js/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'app/js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/js/csrf_token_ajax.js' %}"></script>
 <title> My Osero</title>
 </head>
 <body>
+<div style="float: left;">
+<h1>Osero</h1>
 
-<form id="choice" action="" method="post">{% csrf_token %}
+<form action="" method="post">{% csrf_token %}
+        <input type="submit" id="restart" value="restart">
+</form>
+</div>
+<div style="text-align: center;">
+<h1>{{ which }}</h1>
+<form id="choice" action="/osero/play/" method="post">{% csrf_token %}
 <table style="margin: auto; background: black;">
 {% for package in packages %}
 <tr>
 {% for item in package.items %}
-<td><button  type="submit" style="background: black;" id="choice_panel" value="{{ item.item.1 }},{{ item.item.2 }}"><img src="{{ item.item.0.url }}" alt="{{ item.item.0.name }}" height ="90" width="90" /></button></td>
+<td><button  type="submit" style="background: black;" id="{{ item.item.1 }},{{ item.item.2 }}" value="{{ item.item.3 }}"><img src="{{ item.item.0.url }}" alt="{{ item.item.0.name }}" height ="90" width="90" /></button></td>
 {% endfor %}
 </tr>
 {% endfor %}
 </table>
 </form>
-
+</div>
 </body>
-
 <script type="text/javascript">
-	$(document).ready(function(){
-		$('#choice').submit(function(){
-			$.ajax({
-				'url':'',
-				'type':'POST',
-				'data':{
-					'place':$('#choice_panel').val(),
-					'csrfmidlwaretoken':$('input[name=csrfmidlwaretoken]').val(),
-				},
-				'succexx':function(response){
-					alert('check!');
-				},
-			});
-			return false;
-		});
+$(document).on('submit','#choice',function(e) {  // ボタンクリックでAJAX
+    var point = e.originalEvent.explicitOriginalTarget.id
+    console.log();
+    e.preventDefault();
+	$.ajax({
+		url:$('form#choice').attr('action'),
+	    type:'POST',
+		data:{
+		point:point,
+		csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+		 },
+		success:function(){
+		location.reload();
+		},
 	});
+});
+
+
 </script>
 </html>
 

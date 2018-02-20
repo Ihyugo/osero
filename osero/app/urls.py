@@ -17,5 +17,6 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'', views.index),
+    url(r'^start/', views.start, name="start"),
+    url(r'^play/', views.index, name="index"),
 ]
