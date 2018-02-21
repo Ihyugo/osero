@@ -11,9 +11,6 @@ def start(request):
     players = Players()
     if 'style' in request.POST:
             datas = '00000000000000000000000000021000000120000000000000000000000000003'
-            f = open('text.txt', 'w')
-            f.write(datas)
-            f.close()
             Book.objects.all().delete()
             AllPanel.objects.all().delete()
             Book.objects.get_or_create(panel=54)
@@ -28,11 +25,10 @@ def index(request):
     places = []
     if request.method == "POST":
         if "point" in request.POST:
-            f = open('text.txt')
-            texts = f.read()
-            f.close()
-            for text in texts:
-                places.append(int(text))
+            objs = AllPanel.objects.all()[0].allpanel
+            for obj in objs:
+                places.append(int(obj))
+            print(places)
             b_places = places
             points = request.POST.get('point')
             switch = points.split(",")
@@ -52,16 +48,13 @@ def index(request):
                 places = ReversePanel(places, point_x, point_y,reverse_point,b_places)
                 for place in places:
                     text_str += str(place)
-                f = open('text.txt','w')
-                f.write(text_str)
-                f.close()
+                AllPanel.objects.all().delete()
+                AllPanel.objects.get_or_create(allpanel=text_str)
         else:
             return HttpResponseRedirect('/osero/start/')
     else:
         print("begin")
-        f = open('text.txt')
-        datas = f.read()
-        f.close()
+        datas = AllPanel.objects.all()[0].allpanel
         for data in datas:
             places.append(int(data))
     packages = Set_Panel(places)
